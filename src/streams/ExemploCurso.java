@@ -3,6 +3,9 @@ package streams;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -75,6 +78,41 @@ public class ExemploCurso{
 		
 		System.out.println(soma);
 		
+		
+		/* Pesquisar por um curso que tem mais de 100 alunos
+		 * 
+		 * Optional = permite trabalhar com valores Null onde neste caso
+		 * pode ser que o curso exista ou não exista
+		 * 
+		 * */
+		Optional<Curso> optional = cursos.stream()
+			.filter(c -> c.getAlunos() > 100)
+			.findAny();
+		
+		
+		
+		Curso curso = optional.orElse(null);
+		System.out.println(curso.getNome());
+		
+		
+		// retorna um valor se atender à condição
+		cursos.stream()
+		.filter(c -> c.getAlunos() > 100)
+		.findAny()
+		.ifPresent(c -> System.out.println(c.getNome()));
+		
+		
+		// OptionalDouble - obtem a média
+		OptionalDouble media = cursos.stream()
+		.filter(c -> c.getAlunos() > 100)
+		.mapToInt(Curso::getAlunos)
+		.average();
+		
+		
+		// Retornando o valor de stream manipulada para uma List
+		List<Curso> resultado = cursos.stream()
+			.filter(c -> c.getAlunos() >= 100)
+			.collect(Collectors.toList());
 	}
 }
 
